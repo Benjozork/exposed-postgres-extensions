@@ -25,3 +25,33 @@ dependencies {
 ```
 
 That's it ! No additional setup required.
+
+## Example
+
+Create a table with a generated column :
+
+(note: `PgTable` is currently needed to use the `.generated {}` extension, because of limitation with Kotlin extension functions)
+
+```kotlin
+object : PgTable() {
+    val id = integer("id")
+    val name = text("name")
+    val uppercaseName = bool("name_is_short")
+            .generated { name.upperCase().charLength() less 10 }
+
+    override val primaryKey = PrimaryKey(id)
+}
+```
+
+This will result in the following DDL (formatted for legibility reasons) :
+
+```sql
+create table if not exists test (
+    id int primary key,
+    "name" text not null,
+    name_is_short boolean
+        generated always as (
+            char_length(upper(test."name")) < 10
+        ) stored not null
+);
+```
