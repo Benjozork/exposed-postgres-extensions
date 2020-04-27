@@ -12,6 +12,8 @@ import org.jetbrains.exposed.sql.vendors.PostgreSQLDialect
  *               injection if the correct functions are used, but you should still be careful about any
  *               user-provided data, which should be avoided if possible.
  *
+ * See : [PostgreSQL Docs](https://www.postgresql.org/docs/current/ddl-generated-columns.html)
+ *
  * @author Benjozork
  *
  * @property baseType  the base [type][ColumnType] of the generated column, aka. its return type
