@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Assertions.*
 class GeneratedColumnTests {
 
     @BeforeAll fun setup() {
-        val dbUrl = System.getenv("EPGXX_TEST_DB_URL")
+        val dbUrl = System.getenv("EPGX_TEST_DB_URL")
             ?: error("EPGX_TEST_DB_URL not set")
 
         val dbUser = System.getenv("EPGX_TEST_DB_USER")
@@ -30,13 +30,15 @@ class GeneratedColumnTests {
     @Test fun `should generate the right DDL for a generated column`() {
         val ddl = transaction {
             object : PgTable() {
+                override val tableName = "test"
+
                 val id = integer("id")
                 val name = text("name")
                 val uppercaseName = bool("name_is_short")
                         .generated { name.upperCase().charLength() less 10 }
 
                 override val primaryKey = PrimaryKey(id)
-            }.ddl
+            }.ddl.also(::println)
         }
 
         assertTrue(ddl.first().contains("BOOLEAN GENERATED ALWAYS AS ( CHAR_LENGTH(UPPER(test.\"name\")) < 10 ) STORED NOT NULL"))
