@@ -2,30 +2,15 @@ package epgx.test.types
 
 import epgx.models.PgTable
 import epgx.functions.charLength
+import epgx.test.models.DatabaseConnectedTest
 
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.Assertions.*
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class GeneratedColumnTests {
-
-    @BeforeAll fun setup() {
-        val dbUrl = System.getenv("EPGX_TEST_DB_URL")
-            ?: error("EPGX_TEST_DB_URL not set")
-
-        val dbUser = System.getenv("EPGX_TEST_DB_USER")
-            ?: error("EPGX_TEST_DB_USER not set")
-
-        val dbPassword = System.getenv("EPGX_TEST_DB_PASSWORD")
-            ?: error("EPGX_TEST_DB_PASSWORD not set")
-
-        Database.connect(dbUrl, "org.postgresql.Driver", dbUser, dbPassword)
-    }
+class GeneratedColumnTest : DatabaseConnectedTest() {
 
     @Test fun `should generate the right DDL for a generated column`() {
         val ddl = transaction {
@@ -38,10 +23,10 @@ class GeneratedColumnTests {
                         .generated { name.upperCase().charLength() less 10 }
 
                 override val primaryKey = PrimaryKey(id)
-            }.ddl.also(::println)
+            }.ddl.first().also { println("ddl: $it") }
         }
 
-        assertTrue(ddl.first().contains("BOOLEAN GENERATED ALWAYS AS ( CHAR_LENGTH(UPPER(test.\"name\")) < 10 ) STORED NOT NULL"))
+        assertTrue(ddl.contains("BOOLEAN GENERATED ALWAYS AS ( CHAR_LENGTH(UPPER(test.\"name\")) < 10 ) STORED NOT NULL"))
     }
 
     @Test fun `should throw an IllegalStateException when making a nullable column generated`() {
@@ -55,7 +40,7 @@ class GeneratedColumnTests {
 
                 override val primaryKey = PrimaryKey(id)
             }
-        }
+        }.also { println("exception : ${it::class.simpleName}: ${it.message}") }
     }
 
 }
