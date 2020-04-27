@@ -2,7 +2,7 @@
 
 `exposed-postgres-extensions` is a library that adds PostgreSQL-specific functionality to [JetBrains' Exposed](https://github.com/JetBrains/Exposed).
 
-This library is in a very early state. Except bugs and rough corners. Feel free to report any issues and submit PRs !
+This library is in a very early state. Expect bugs and rough corners. Feel free to report any issues and submit PRs !
 
 ## Functionality
 
