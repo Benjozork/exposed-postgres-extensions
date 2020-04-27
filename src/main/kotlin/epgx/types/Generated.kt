@@ -5,7 +5,12 @@ import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.vendors.PostgreSQLDialect
 
 /**
- * Allows to create a PostgreSQL `generated` column.
+ * Allows to create a PostgreSQL `generated always as` column.
+ *
+ * **Warning :** evaluating this type for generating the DDL invokes the [generator] function and places it's input
+ *               directly inside the type definition by calling its [Expression.toString]. Exposed *should* prevent any
+ *               injection if the correct functions are used, but you should still be careful about any
+ *               user-provided data, which should be avoided if possible.
  *
  * @author Benjozork
  *
