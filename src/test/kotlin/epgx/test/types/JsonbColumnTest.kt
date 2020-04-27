@@ -1,0 +1,54 @@
+package epgx.test.types
+
+import epgx.test.models.DatabaseConnectedTest
+import epgx.types.Jsonb
+
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Assertions.*
+
+import org.postgresql.util.PGobject
+
+class JsonbColumnTest : DatabaseConnectedTest() {
+
+    data class Person (
+        val name: String,
+        val height: Int
+    )
+
+    private val personSerializer: (Person) -> String =
+            { person -> "{ \"name\": \"${person.name}\", \"height\": ${person.height} }" }
+
+    private val personDeserializer: (String) -> Person =
+            { json ->
+                val (_, name, height) = Regex("\\{\\s*\"name\"\\s*:\\s*\"(.*)\",\\s*\"height\"\\s*:\\s*(\\d+)\\s*}").matchEntire(json)!!.groupValues
+
+                Person(name, height.toInt())
+            }
+
+    @Test fun `should give the right type string`() {
+        assertEquals("JSONB", Jsonb({ it }, { it }).sqlType().also { println("type : $it") })
+    }
+
+    @Test fun `should properly output JSON for the database`() {
+        val person = Person("Kira", 135)
+        val type = Jsonb(personSerializer, personDeserializer)
+
+        assertEquals (
+            PGobject().apply { this.type = "jsonb"; this.value = personSerializer(person) },
+            type.notNullValueToDB(person)
+                    .also { println("notNullValueToDB : $it") }
+        )
+    }
+
+    @Test fun `should properly accept JSON from the database`() {
+        val person = Person("Kira", 135)
+        val type = Jsonb(personSerializer, personDeserializer)
+
+        assertEquals (
+            person,
+            type.valueFromDB(PGobject().apply { this.type = "jsonb"; this.value = personSerializer(person) })
+                    .also { println("valueFromDB : $it") }
+        )
+    }
+
+}

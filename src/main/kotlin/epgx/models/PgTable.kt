@@ -1,6 +1,7 @@
 package epgx.models
 
 import epgx.types.Generated
+import epgx.types.Jsonb
 
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Expression
@@ -22,5 +23,20 @@ open class PgTable : Table() {
 
         return replaceColumn(this, newColumn)
     }
+
+    /**
+     * Creates a column storing instances of [T] using the [Jsonb] type.
+     *
+     * @param serializer   see [Jsonb]
+     * @param deserializer see [Jsonb]
+     */
+    fun <T : Any?> jsonb(name: String, serializer: (T) -> String, deserializer: (String) -> T): Column<T> {
+        return registerColumn(name, Jsonb(serializer, deserializer))
+    }
+
+    /**
+     * Creates a column storing plain JSON strings using the [Jsonb] type.
+     */
+    fun jsonb(name: String): Column<String> = registerColumn(name, Jsonb({ it }, { it }))
 
 }
