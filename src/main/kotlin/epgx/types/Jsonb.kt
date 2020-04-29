@@ -19,6 +19,14 @@ class Jsonb<T : Any?> (
     private val deserializer: (String) -> T
 ) : ColumnType() {
 
+    interface Converter<T : Any?> {
+
+        fun serializer(instance: T): String
+
+        fun deserializer(source: String): T
+
+    }
+
     override fun sqlType() = "JSONB"
 
     @Suppress("UNCHECKED_CAST")

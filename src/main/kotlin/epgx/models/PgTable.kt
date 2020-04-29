@@ -35,6 +35,15 @@ open class PgTable(name: String = "") : Table(name) {
     }
 
     /**
+     * Creates a column storing instances of [T] using the [Jsonb] type.
+     *
+     * @param converter see [Jsonb]
+     */
+    fun <T : Any?> jsonb(name: String, converter: Jsonb.Converter<T>): Column<T> {
+        return registerColumn(name, Jsonb(converter::serializer, converter::deserializer))
+    }
+
+    /**
      * Creates a column storing plain JSON strings using the [Jsonb] type.
      */
     fun jsonb(name: String): Column<String> = registerColumn(name, Jsonb({ it }, { it }))
