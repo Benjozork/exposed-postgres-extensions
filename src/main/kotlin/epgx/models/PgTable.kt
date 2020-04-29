@@ -13,7 +13,7 @@ import org.jetbrains.exposed.sql.Table
  *
  * @author Benjozork
  */
-open class PgTable : Table() {
+open class PgTable(name: String = "") : Table(name) {
 
     @Suppress("UNCHECKED_CAST")
     fun <T, C : Column<T>> C.generated(generator: SqlExpressionBuilder.() -> Expression<*>): C {
