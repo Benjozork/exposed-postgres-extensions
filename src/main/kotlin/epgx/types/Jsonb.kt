@@ -19,6 +19,12 @@ class Jsonb<T : Any?> (
     private val deserializer: (String) -> T
 ) : ColumnType() {
 
+    /**
+     * Interface that allow library-agnostic conversion of data from and to JSON
+     *
+     * @property serializer   converts an instance of [T] to a JSON string
+     * @property deserializer converts a JSON string to an instance of [T]
+     */
     interface Converter<T : Any?> {
 
         fun serializer(instance: T): String
