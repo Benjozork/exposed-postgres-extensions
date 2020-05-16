@@ -1,5 +1,6 @@
 package epgx.models
 
+import epgx.models.values.TsVector
 import epgx.types.Generated
 import epgx.types.JsonbColumnType
 import epgx.types.TsVectorColumnType
@@ -47,6 +48,11 @@ open class PgTable(name: String = "") : Table(name) {
     /**
      * Creates a column storing plain JSON strings using the [JsonbColumnType] type.
      */
-    fun jsonb(name: String): Column<String> = registerColumn(name, Jsonb({ it }, { it }))
+    fun jsonb(name: String): Column<String> = registerColumn(name, JsonbColumnType({ it }, { it }))
+
+    /**
+     * Creates a column using the [TsVectorColumnType] type.
+     */
+    fun tsvector(name: String): Column<TsVector> = registerColumn(name, TsVectorColumnType())
 
 }
