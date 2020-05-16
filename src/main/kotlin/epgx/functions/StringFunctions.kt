@@ -1,12 +1,8 @@
 package epgx.functions
 
-import org.jetbrains.exposed.sql.ColumnType
 import org.jetbrains.exposed.sql.CustomFunction
 import org.jetbrains.exposed.sql.Expression
 import org.jetbrains.exposed.sql.IntegerColumnType
-
-private fun <TIn : String?, TOut : Any> Expression<TIn>.function(name: String, returnType: ColumnType): Expression<TOut> =
-    CustomFunction(name, returnType, this)
 
 // Some standard SQL functions, but not present in Exposed.
 

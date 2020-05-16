@@ -1,7 +1,8 @@
 package epgx.models
 
 import epgx.types.Generated
-import epgx.types.Jsonb
+import epgx.types.JsonbColumnType
+import epgx.types.TsVectorColumnType
 
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Expression
@@ -25,26 +26,26 @@ open class PgTable(name: String = "") : Table(name) {
     }
 
     /**
-     * Creates a column storing instances of [T] using the [Jsonb] type.
+     * Creates a column storing instances of [T] using the [JsonbColumnType] type.
      *
-     * @param serializer   see [Jsonb]
-     * @param deserializer see [Jsonb]
+     * @param serializer   see [JsonbColumnType]
+     * @param deserializer see [JsonbColumnType]
      */
     fun <T : Any?> jsonb(name: String, serializer: (T) -> String, deserializer: (String) -> T): Column<T> {
-        return registerColumn(name, Jsonb(serializer, deserializer))
+        return registerColumn(name, JsonbColumnType(serializer, deserializer))
     }
 
     /**
-     * Creates a column storing instances of [T] using the [Jsonb] type.
+     * Creates a column storing instances of [T] using the [JsonbColumnType] type.
      *
-     * @param converter see [Jsonb]
+     * @param converter see [JsonbColumnType]
      */
-    fun <T : Any?> jsonb(name: String, converter: Jsonb.Converter<T>): Column<T> {
-        return registerColumn(name, Jsonb(converter::serializer, converter::deserializer))
+    fun <T : Any?> jsonb(name: String, converter: JsonbColumnType.Converter<T>): Column<T> {
+        return registerColumn(name, JsonbColumnType(converter::serializer, converter::deserializer))
     }
 
     /**
-     * Creates a column storing plain JSON strings using the [Jsonb] type.
+     * Creates a column storing plain JSON strings using the [JsonbColumnType] type.
      */
     fun jsonb(name: String): Column<String> = registerColumn(name, Jsonb({ it }, { it }))
 

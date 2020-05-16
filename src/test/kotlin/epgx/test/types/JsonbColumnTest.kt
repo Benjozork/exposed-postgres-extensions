@@ -1,7 +1,7 @@
 package epgx.test.types
 
 import epgx.test.models.DatabaseConnectedTest
-import epgx.types.Jsonb
+import epgx.types.JsonbColumnType
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
@@ -26,12 +26,12 @@ class JsonbColumnTest : DatabaseConnectedTest() {
             }
 
     @Test fun `should give the right type string`() {
-        assertEquals("JSONB", Jsonb({ it }, { it }).sqlType().also { println("type : $it") })
+        assertEquals("JSONB", JsonbColumnType({ it }, { it }).sqlType().also { println("type : $it") })
     }
 
     @Test fun `should properly output JSON for the database`() {
         val person = Person("Kira", 135)
-        val type = Jsonb(personSerializer, personDeserializer)
+        val type = JsonbColumnType(personSerializer, personDeserializer)
 
         assertEquals (
             PGobject().apply { this.type = "jsonb"; this.value = personSerializer(person) },
@@ -42,7 +42,7 @@ class JsonbColumnTest : DatabaseConnectedTest() {
 
     @Test fun `should properly accept JSON from the database`() {
         val person = Person("Kira", 135)
-        val type = Jsonb(personSerializer, personDeserializer)
+        val type = JsonbColumnType(personSerializer, personDeserializer)
 
         assertEquals (
             person,

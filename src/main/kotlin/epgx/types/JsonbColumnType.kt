@@ -14,7 +14,7 @@ import org.postgresql.util.PGobject
  * @property serializer   a function that converts instances of [T] to a JSON string
  * @property deserializer a function that converts a JSON string to an instance of [T]
  */
-class Jsonb<T : Any?> (
+class JsonbColumnType<T : Any?> (
     private val serializer: (T) -> String,
     private val deserializer: (String) -> T
 ) : ColumnType() {
