@@ -18,18 +18,3 @@ fun <T : String?> Expression<T>.toTsVector(language: String? = null): CustomFunc
         CustomFunction("to_tsvector", TsVectorColumnType(), this)
     else
         CustomFunction("to_tsvector", TsVectorColumnType(), QueryParameter(language, TextColumnType()), this)
-
-/**
- * Creates a `tsvector` expression from a column.
- *
- * @param language the `regconfig` to use
- *
- * @author Benjozork
- *
- * [PostgreSQL Documentation](https://www.postgresql.org/docs/current/textsearch-controls.html#TEXTSEARCH-PARSING-DOCUMENTS)
- */
-fun <T : Any> Column<T>.toTsVector(language: String? = null): CustomFunction<TsVectorColumnType> =
-    if (language == null)
-        CustomFunction("to_tsvector", TsVectorColumnType(), this)
-    else
-        CustomFunction("to_tsvector", TsVectorColumnType(), QueryParameter(language, TextColumnType()), this)
