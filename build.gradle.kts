@@ -12,11 +12,14 @@ repositories {
 }
 
 dependencies {
+
+    val exposedVersion: String by project
+
     implementation(kotlin("stdlib-jdk8"))
 
     implementation("org.postgresql", "postgresql", "42.1.4")
-    implementation("org.jetbrains.exposed", "exposed-core", "0.23.1")
-    implementation("org.jetbrains.exposed", "exposed-jdbc", "0.23.1")
+    implementation("org.jetbrains.exposed", "exposed-core", exposedVersion)
+    implementation("org.jetbrains.exposed", "exposed-jdbc", exposedVersion)
 
     testImplementation("ch.qos.logback", "logback-classic", "1.2.3")
     testImplementation("org.junit.jupiter", "junit-jupiter", "5.5.2")
