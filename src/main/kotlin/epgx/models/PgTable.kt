@@ -1,14 +1,11 @@
 package epgx.models
 
 import epgx.models.values.TsVector
+import epgx.ops.PipePipeOp
 import epgx.types.Generated
 import epgx.types.JsonbColumnType
 import epgx.types.TsVectorColumnType
-
-import org.jetbrains.exposed.sql.Column
-import org.jetbrains.exposed.sql.Expression
-import org.jetbrains.exposed.sql.SqlExpressionBuilder
-import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.*
 
 /**
  * Wrapper around [Exposed's `Table`][Table] to include postgres-specific extension functions on the column DSL
@@ -54,5 +51,17 @@ open class PgTable(name: String = "") : Table(name) {
      * Creates a column using the [TsVectorColumnType] type.
      */
     fun tsvector(name: String): Column<TsVector> = registerColumn(name, TsVectorColumnType())
+
+    /**
+     * Concatenates [this] and [other] using [PipePipeOp]
+     */
+    operator fun Expression<out String?>.plus(other: Expression<out String?>): PipePipeOp =
+            PipePipeOp(this, other)
+
+    /**
+     * Concatenates [this] and [other] using [PipePipeOp]
+     */
+    operator fun Expression<out String?>.plus(other: String): PipePipeOp =
+            PipePipeOp(this, stringLiteral(other))
 
 }
