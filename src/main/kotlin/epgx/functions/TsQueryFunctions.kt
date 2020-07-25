@@ -10,7 +10,7 @@ private fun castLanguage(language: String?) =
     )
 
 /**
- * Creates a `tsquery` string from a column, using the `to_tsquery` function.
+ * Creates a `tsquery` string from a column, using the `to_tsquery` function.
  *
  * @param language the `regconfig` to use
  *
@@ -22,7 +22,7 @@ fun <T : String?> Expression<T>.toTsQuery(language: String? = null): CustomFunct
     if (language == null)
         CustomFunction("to_tsquery", TextColumnType(), this)
     else
-        CustomFunction("to_tsquery", TextColumnType(), castLanguage(language), this)
+        CustomFunction("to_tsquery", TextColumnType(), stringLiteral(language), this)
 
 
 /**
@@ -38,7 +38,7 @@ fun <T : String?> Expression<T>.plainToTsQuery(language: String? = null): Custom
     if (language == null)
         CustomFunction("plainto_tsquery", TextColumnType(), this)
     else
-        CustomFunction("plainto_tsquery", TextColumnType(), castLanguage(language), this)
+        CustomFunction("plainto_tsquery", TextColumnType(), stringLiteral(language), this)
 
 /**
  * Creates a `tsvector` expression from a column, using the `phraseto_tsquery` function.
@@ -53,7 +53,7 @@ fun <T : String?> Expression<T>.phraseToTsQuery(language: String? = null): Custo
     if (language == null)
         CustomFunction("phraseto_tsquery", TextColumnType(), this)
     else
-        CustomFunction("phraseto_tsquery", TextColumnType(), castLanguage(language), this)
+        CustomFunction("phraseto_tsquery", TextColumnType(), stringLiteral(language), this)
 
 /**
  * Creates a `tsvector` expression from a column, using the `websearch_to_tsquery` function.
@@ -68,4 +68,4 @@ fun <T : String?> Expression<T>.webSearchToTsQuery(language: String? = null): Cu
     if (language == null)
         CustomFunction("websearch_to_tsquery", TextColumnType(), this)
     else
-        CustomFunction("websearch_to_tsquery", TextColumnType(), castLanguage(language), this)
+        CustomFunction("websearch_to_tsquery", TextColumnType(), stringLiteral(language), this)

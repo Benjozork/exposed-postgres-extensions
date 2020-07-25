@@ -23,7 +23,7 @@ open class DatabaseConnectedTest(private vararg val tables: PgTable = arrayOf())
 
         val dbPassword = System.getenv("EPGX_TEST_DB_PASSWORD") ?: error("EPGX_TEST_DB_PASSWORD not set")
 
-        Database.connect(dbUrl, "org.postgresql.Driver", dbUser, dbPassword)
+        Database.connect(dbUrl, "com.impossibl.postgres.jdbc.PGDriver", dbUser, dbPassword)
 
         transaction { SchemaUtils.drop(*tables) }
         transaction { SchemaUtils.create(*tables) }

@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "dev.31416"
-version = "0.0.1"
+version = "0.1.0"
 
 repositories {
     mavenCentral()
@@ -17,7 +17,7 @@ dependencies {
 
     implementation(kotlin("stdlib-jdk8"))
 
-    implementation("org.postgresql", "postgresql", "42.1.4")
+    implementation("com.impossibl.pgjdbc-ng", "pgjdbc-ng", "0.8.4")
     implementation("org.jetbrains.exposed", "exposed-core", exposedVersion)
     implementation("org.jetbrains.exposed", "exposed-jdbc", exposedVersion)
 

@@ -2,8 +2,6 @@ package epgx.types
 
 import org.jetbrains.exposed.sql.ColumnType
 
-import org.postgresql.util.PGobject
-
 /**
  * Allows to create a PostgreSQL `jsonb` column.
  *
@@ -36,8 +34,7 @@ class JsonbColumnType<T : Any?> (
     override fun sqlType() = "JSONB"
 
     @Suppress("UNCHECKED_CAST")
-    override fun notNullValueToDB(value: Any): PGobject =
-            PGobject().apply { type = "jsonb"; this.value = serializer(value as T) }
+    override fun notNullValueToDB(value: Any) = serializer(value as T)
 
     @Suppress("UNCHECKED_CAST")
     override fun nonNullValueToString(value: Any): String =

@@ -37,6 +37,10 @@ class TsQueryFunctionsTest : DatabaseConnectedTest(TsQueryTestTable) {
             TsQueryTestTable.insert { it[text] = "'supernovae stars' & !crab" }
         }
 
+        transaction {
+            connection
+        }
+
         val results = transaction {
             TsQueryTestTable.slice(TsQueryTestTable.text.toTsQuery("english")).selectAll()
                 .map { "${it[it.fieldIndex.keys.first()]}" }.also { println(it.joinToString("\n")) }

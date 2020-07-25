@@ -6,8 +6,6 @@ import epgx.types.JsonbColumnType
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 
-import org.postgresql.util.PGobject
-
 class JsonbColumnTest : DatabaseConnectedTest() {
 
     data class Person (
@@ -34,7 +32,7 @@ class JsonbColumnTest : DatabaseConnectedTest() {
         val type = JsonbColumnType(personSerializer, personDeserializer)
 
         assertEquals (
-            PGobject().apply { this.type = "jsonb"; this.value = personSerializer(person) },
+            personSerializer(person),
             type.notNullValueToDB(person)
                     .also { println("notNullValueToDB : $it") }
         )
@@ -46,7 +44,7 @@ class JsonbColumnTest : DatabaseConnectedTest() {
 
         assertEquals (
             person,
-            type.valueFromDB(PGobject().apply { this.type = "jsonb"; this.value = personSerializer(person) })
+            type.valueFromDB(personSerializer(person))
                     .also { println("valueFromDB : $it") }
         )
     }
