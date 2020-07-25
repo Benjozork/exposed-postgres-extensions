@@ -9,6 +9,7 @@ This library is in a very early state. Expect bugs and rough corners. Feel free 
 - Generated columns (`generated always as`) ([see: PostgreSQL Docs](https://www.postgresql.org/docs/current/ddl-generated-columns.html))
 - Very basic support for `JSONB`
 - Additional functions (currently `String` : `bit_length`, `char_length` and `octet_length`)
+- Basic support of LISTEN / NOTIFY
 
 ## Usage
 
